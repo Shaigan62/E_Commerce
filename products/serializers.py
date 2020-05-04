@@ -26,4 +26,3 @@ class ProductRatingSerializer(serializers.ModelSerializer):
         model = Product_Rating
         fields = '__all__'
 
-

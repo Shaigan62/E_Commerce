@@ -36,3 +36,4 @@ class TopProductViewSet(generics.ListAPIView):
                       .filter(sold__in=product_top[:3]))
 
         return product_top
+

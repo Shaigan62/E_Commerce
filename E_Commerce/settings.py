@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'accounts',
     'products',
     'orders',
+    'search_app',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
