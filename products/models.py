@@ -1,0 +1,27 @@
+from django.db import models
+from accounts.models import User
+
+class Category(models.Model):
+    title = models.CharField(max_length=255)
+    parent_id = models.ForeignKey("self",on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.title
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    sku = models.CharField(max_length=255)
+    price = models.FloatField()
+    stock = models.IntegerField()
+    description = models.TextField()
+    category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
+
+class Product_Variant(models.Model):
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    color = models.CharField(max_length=100)
+    size  = models.CharField(max_length=100)
+
+class Product_Image(models.Model):
+    img_url = models.CharField(max_length=255)
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+
