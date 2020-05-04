@@ -20,5 +20,3 @@ class Order_Details(models.Model):
     product_id = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     product_variant_id = models.ForeignKey(Product_Variant,on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField()
-
-

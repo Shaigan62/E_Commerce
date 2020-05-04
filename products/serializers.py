@@ -25,3 +25,5 @@ class ProductRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_Rating
         fields = '__all__'
+
+

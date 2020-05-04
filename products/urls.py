@@ -11,5 +11,6 @@ router.register('category',CategoryViewSet,basename='category')
 router.register('rating',ProductRatingViewSet,basename='rating')
 urlpatterns = [
     path('',include(router.urls)),
+    path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),
 
 ]
