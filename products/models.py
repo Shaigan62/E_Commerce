@@ -15,6 +15,8 @@ class Product(models.Model):
     stock = models.IntegerField()
     description = models.TextField()
     category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
+    sold = models.IntegerField(default=0)
+    user_clicks = models.IntegerField(default=0)
 
 class Product_Variant(models.Model):
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
@@ -24,4 +26,9 @@ class Product_Variant(models.Model):
 class Product_Image(models.Model):
     img_url = models.CharField(max_length=255)
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+
+class Product_Rating(models.Model):
+    rating = models.FloatField()
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
 

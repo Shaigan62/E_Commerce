@@ -20,3 +20,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+class ProductRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product_Rating
+        fields = '__all__'

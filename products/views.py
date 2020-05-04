@@ -16,3 +16,7 @@ class ProductVariantViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+class ProductRatingViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductRatingSerializer
+    queryset = Product_Rating.objects.all()
