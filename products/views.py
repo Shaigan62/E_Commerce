@@ -37,3 +37,7 @@ class TopProductViewSet(generics.ListAPIView):
 
         return product_top
 
+
+class ProductDetailViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductDetailsSerializer
+    queryset = Product.objects.all()

@@ -9,7 +9,7 @@ router.register('productimage',ProductImageViewSet,basename='product_image')
 router.register('productvariant',ProductVariantViewSet,basename='product_variant')
 router.register('category',CategoryViewSet,basename='category')
 router.register('rating',ProductRatingViewSet,basename='rating')
-
+router.register('details',ProductDetailViewSet,basename='details')
 urlpatterns = [
     path('',include(router.urls)),
     path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),

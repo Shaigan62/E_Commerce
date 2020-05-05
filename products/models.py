@@ -14,18 +14,24 @@ class Product(models.Model):
     price = models.FloatField()
     stock = models.IntegerField()
     description = models.TextField()
-    category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
     sold = models.IntegerField(default=0)
     user_clicks = models.IntegerField(default=0)
 
 class Product_Variant(models.Model):
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product,related_name='variants',on_delete=models.CASCADE)
     color = models.CharField(max_length=100)
     size  = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.img_url
+
 class Product_Image(models.Model):
     img_url = models.CharField(max_length=255)
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product,related_name='images',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.img_url
 
 class Product_Rating(models.Model):
     rating = models.FloatField()
