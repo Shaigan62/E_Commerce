@@ -1,6 +1,7 @@
 from .serializers import *
 from rest_framework import viewsets
 from rest_framework import generics
+from rest_framework import filters
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -41,3 +42,10 @@ class TopProductViewSet(generics.ListAPIView):
 class ProductDetailViewSet(viewsets.ModelViewSet):
     serializer_class = ProductDetailsSerializer
     queryset = Product.objects.all()
+
+
+class ProductByCategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductByCategorySeializer
+    queryset = Category.objects.all()
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter)
+    search_fields = ['title']

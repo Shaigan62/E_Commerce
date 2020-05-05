@@ -10,6 +10,7 @@ router.register('productvariant',ProductVariantViewSet,basename='product_variant
 router.register('category',CategoryViewSet,basename='category')
 router.register('rating',ProductRatingViewSet,basename='rating')
 router.register('details',ProductDetailViewSet,basename='details')
+router.register('categoryproduct',ProductByCategoryViewSet,basename='categoryproduct')
 urlpatterns = [
     path('',include(router.urls)),
     path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),

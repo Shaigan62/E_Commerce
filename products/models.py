@@ -14,7 +14,7 @@ class Product(models.Model):
     price = models.FloatField()
     stock = models.IntegerField()
     description = models.TextField()
-    category = models.ForeignKey(Category,on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,related_name='pro_category',on_delete=models.CASCADE)
     sold = models.IntegerField(default=0)
     user_clicks = models.IntegerField(default=0)
 

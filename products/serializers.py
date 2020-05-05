@@ -34,4 +34,14 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
         extra_fields = ['images']
-        depth = 2
+
+class ProductByCategorySeializer(serializers.ModelSerializer):
+    pro_category = ProductSerializer(many=True)
+    class Meta:
+        model = Category
+        fields = '__all__'
+        extra_fields=['pro_category']
+        depth = 3
+
+
+
