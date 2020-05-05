@@ -49,3 +49,14 @@ class ProductByCategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
     search_fields = ['title']
+
+
+class ProductFilterViewSet(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = "name"
+    def get_queryset(self):
+        uid = self.kwargs.get(self.lookup_url_kwarg)
+        prod = Product.objects.filter(name=uid)
+        return prod
+
+

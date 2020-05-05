@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'products',
     'orders',
     'search_app',
+    'shoppingcart',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',

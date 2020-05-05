@@ -9,11 +9,11 @@ router.register('productimage',ProductImageViewSet,basename='product_image')
 router.register('productvariant',ProductVariantViewSet,basename='product_variant')
 router.register('category',CategoryViewSet,basename='category')
 router.register('rating',ProductRatingViewSet,basename='rating')
-router.register('details',ProductDetailViewSet,basename='details')
-router.register('categoryproduct',ProductByCategoryViewSet,basename='categoryproduct')
+router.register('details',ProductDetailViewSet,basename='details')                          #get details of product like image and variants
+router.register('categoryproduct',ProductByCategoryViewSet,basename='categoryproduct')      #products that belongs to a specific category
 urlpatterns = [
     path('',include(router.urls)),
-    path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),
-
+    path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),                   #top 3 products based on products sold
+    path('filter/<name>&<id>/',ProductFilterViewSet.as_view(), name='filter'),
 
 ]
