@@ -14,6 +14,6 @@ router.register('categoryproduct',ProductByCategoryViewSet,basename='categorypro
 urlpatterns = [
     path('',include(router.urls)),
     path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),                   #top 3 products based on products sold
-    path('filter/<name>&<id>/',ProductFilterViewSet.as_view(), name='filter'),
+    path('filter/',ProductFilterViewSet, name='filter'),
 
 ]

@@ -2,6 +2,9 @@ from .serializers import *
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import filters
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -25,7 +28,7 @@ class ProductRatingViewSet(viewsets.ModelViewSet):
 
 
 class TopProductViewSet(generics.ListAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailsSerializer
     def get_queryset(self):
         product_top = (Product.objects
                       .order_by('-sold')
@@ -51,12 +54,11 @@ class ProductByCategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['title']
 
 
-class ProductFilterViewSet(generics.ListAPIView):
-    serializer_class = ProductSerializer
-    lookup_url_kwarg = "name"
-    def get_queryset(self):
-        uid = self.kwargs.get(self.lookup_url_kwarg)
-        prod = Product.objects.filter(name=uid)
-        return prod
-
+@api_view(['POST'])
+def ProductFilterViewSet(request):
+    if request.method == 'POST':
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

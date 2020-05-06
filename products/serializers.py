@@ -34,6 +34,7 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
         extra_fields = ['images']
+        depth = 3
 
 class ProductByCategorySeializer(serializers.ModelSerializer):
     pro_category = ProductSerializer(many=True)
