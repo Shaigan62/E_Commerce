@@ -58,6 +58,8 @@ class ProductByCategoryViewSet(viewsets.ModelViewSet):
 def ProductFilterViewSet(request):
     if request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
+        pro = Product.objects.filter(name='screen1')
+
         if serializer.is_valid():
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -37,7 +37,7 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
         depth = 3
 
 class ProductByCategorySeializer(serializers.ModelSerializer):
-    pro_category = ProductSerializer(many=True)
+    pro_category = ProductDetailsSerializer(many=True)
     class Meta:
         model = Category
         fields = '__all__'
