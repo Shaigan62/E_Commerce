@@ -1,10 +1,10 @@
+from rest_framework.response import Response
 from .serializers import *
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import filters
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.views import APIView
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -25,6 +25,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductRatingViewSet(viewsets.ModelViewSet):
     serializer_class = ProductRatingSerializer
     queryset = Product_Rating.objects.all()
+
+class BrandViewSet(viewsets.ModelViewSet):
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
+
+
 
 
 class TopProductViewSet(generics.ListAPIView):
@@ -54,13 +60,24 @@ class ProductByCategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['title']
 
 
-@api_view(['POST'])
-def ProductFilterViewSet(request):
-    if request.method == 'POST':
-        serializer = ProductSerializer(data=request.data)
-        pro = Product.objects.filter(name='screen1')
+class ProductFilterViewSet(APIView):
+    def post(self, request):
+        post_data = request.data
+        priceStart = post_data['priceStart']
+        priceEnd = post_data['priceEnd'] if post_data['priceEnd'] > 0 else Product.objects.latest('price').price
 
-        if serializer.is_valid():
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        brands = [bid.id for bid in Brand.objects.filter(brand_name__in=post_data['brands'])]
+        categories = [cid.id for cid in Category.objects.filter(title__in=post_data['categories'])]
+        product = Product.objects.filter(price__range=(priceStart,priceEnd))
+        if brands:
+            product = product.filter(brand__in=brands)
+        if categories:
+            product = product.filter(category__in=categories)
 
+        product = product.order_by('id')
+
+        paginator = PageNumberPagination()
+        paginator.page_size = post_data['page_limit']
+        result_page = paginator.paginate_queryset(product, request)
+        serializer = ProductSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)

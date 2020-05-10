@@ -11,9 +11,11 @@ router.register('category',CategoryViewSet,basename='category')
 router.register('rating',ProductRatingViewSet,basename='rating')
 router.register('details',ProductDetailViewSet,basename='details')                          #get details of product like image and variants
 router.register('categoryproduct',ProductByCategoryViewSet,basename='categoryproduct')      #products that belongs to a specific category
+router.register('brand',BrandViewSet,basename='brand')
+
 urlpatterns = [
     path('',include(router.urls)),
     path('topproducts/',TopProductViewSet.as_view(), name='topproducts'),                   #top 3 products based on products sold
-    path('filter/',ProductFilterViewSet, name='filter'),
+    path('filter/',ProductFilterViewSet.as_view(), name='filter'),
 
 ]

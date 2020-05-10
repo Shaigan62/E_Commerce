@@ -8,6 +8,13 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+class Brand(models.Model):
+    brand_name = models.CharField(max_length=255)
+    category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.brand_name
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     sku = models.CharField(max_length=255)
@@ -15,6 +22,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     description = models.TextField()
     category = models.ForeignKey(Category,related_name='pro_category',on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand,related_name='pro_brand',on_delete=models.CASCADE,null=True)
     sold = models.IntegerField(default=0)
     user_clicks = models.IntegerField(default=0)
 
@@ -34,3 +42,5 @@ class Product_Rating(models.Model):
     rating = models.FloatField()
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+
+

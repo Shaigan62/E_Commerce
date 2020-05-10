@@ -55,7 +55,9 @@ REST_FRAMEWORK = {
    ),
     'DEFAULT_PERMISSIONS_CLASSES':(
         'rest_framework.permission.IsAuthenticated',
-    )
+    ),
+
+
 }
 
 DJOSER = {

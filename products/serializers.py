@@ -26,10 +26,14 @@ class ProductRatingSerializer(serializers.ModelSerializer):
         model = Product_Rating
         fields = '__all__'
 
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = '__all__'
+
 class ProductDetailsSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True)
     variants = ProductVariantSerializer(many=True)
-
     class Meta:
         model = Product
         fields = '__all__'
