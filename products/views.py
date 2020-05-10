@@ -79,5 +79,5 @@ class ProductFilterViewSet(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = post_data['page_limit']
         result_page = paginator.paginate_queryset(product, request)
-        serializer = ProductSerializer(result_page, many=True)
+        serializer = ProductDetailsSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
