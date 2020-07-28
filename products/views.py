@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import *
 from rest_framework import viewsets, status
@@ -5,10 +6,28 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+    # permission_classes_by_action = {'create': [IsAdminUser],
+    #                                 'list': [AllowAny]}
+    #
+    # def create(self, request, *args, **kwargs):
+    #     return super(ProductViewSet, self).create(request, *args, **kwargs)
+    #
+    # def list(self, request, *args, **kwargs):
+    #     return super(ProductViewSet, self).list(request, *args, **kwargs)
+    #
+    # def get_permissions(self):
+    #     try:
+    #         # return permission_classes depending on `action`
+    #         return [permission() for permission in self.permission_classes_by_action[self.action]]
+    #     except KeyError:
+    #         # action is not set return default permission_classes
+    #         return [permission() for permission in self.permission_classes]
+
 
 class ProductImageViewSet(viewsets.ModelViewSet):
     serializer_class = ProductImageSerializer
@@ -21,6 +40,20 @@ class ProductVariantViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+class SubCategoryViewSet(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    lookup_url_kwarg = "pid"
+    def get_queryset(self):
+        pid = self.kwargs.get(self.lookup_url_kwarg)
+        sub_cateogry = Category.objects.filter(parent_id=pid)
+        return sub_cateogry
+
+class ParentCategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.filter(parent_id__isnull=True)
+
 
 class ProductRatingViewSet(viewsets.ModelViewSet):
     serializer_class = ProductRatingSerializer
