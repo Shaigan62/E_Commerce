@@ -20,7 +20,7 @@ class Product(models.Model):
     sku = models.CharField(max_length=255)
     price = models.FloatField()
     stock = models.IntegerField()
-    description = models.TextField()
+    description = models.TextField(null=True)
     category = models.ForeignKey(Category,related_name='pro_category',on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand,related_name='pro_brand',on_delete=models.CASCADE,null=True)
     sold = models.IntegerField(default=0)
