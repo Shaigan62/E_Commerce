@@ -1,7 +1,11 @@
+from rest_framework.response import Response
 from .serializers import *
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
@@ -15,13 +19,13 @@ class OrderDetailsViewSet(viewsets.ModelViewSet):
     queryset = Order_Details.objects.all()
 
 
-class CustomerOrdersViewSet(generics.ListAPIView):
-    serializer_class = OrderSerializer
-    def get_queryset(self):
-        current_user = self.request.user
-
+class CustomerOrdersViewSet(APIView):
+    def get(self,request):
+        current_user = request.user
         if current_user.is_authenticated:
             orders = Order.objects.filter(user_id=current_user.id)
-            return orders
+            serializer = OrderSerializer(orders,many=True)
+            data = serializer.data
+            return Response(data)
         else:
-            return "Please Login"
+            return JsonResponse({"message":"Not Logged In"})
