@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'orders',
     'search_app',
     'shoppingcart',
+    'faq',
+    'recommenderSystem',
 
 
 ]

@@ -34,6 +34,7 @@ class Product_Variant(models.Model):
 class Product_Image(models.Model):
     img_url = models.CharField(max_length=255)
     product_id = models.ForeignKey(Product,related_name='images',on_delete=models.CASCADE)
+    sku = models.CharField(max_length=255,default="")
 
     def __str__(self):
         return self.img_url

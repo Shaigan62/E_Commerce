@@ -71,7 +71,7 @@ class TopProductViewSet(generics.ListAPIView):
     def get_queryset(self):
         product_top = (Product.objects
                       .order_by('-user_clicks')
-                       )[:2]
+                       )[:5]
 
         return product_top
 
