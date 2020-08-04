@@ -10,5 +10,5 @@ router.register('orderdetails',OrderDetailsViewSet,basename='order_details')
 
 urlpatterns = [
     path('',include(router.urls)),
-
+    path('customerorders/',CustomerOrdersViewSet.as_view(),name='customerorders'),
 ]
