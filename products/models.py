@@ -4,6 +4,7 @@ from accounts.models import User
 class Category(models.Model):
     title = models.CharField(max_length=255)
     parent_id = models.ForeignKey("self",on_delete=models.CASCADE,null=True)
+    category_image = models.CharField(max_length=255, null=True, default="")
 
     def __str__(self):
         return self.title
@@ -11,6 +12,7 @@ class Category(models.Model):
 class Brand(models.Model):
     brand_name = models.CharField(max_length=255)
     category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
+    brand_image = models.CharField(max_length=255,null=True,default="")
 
     def __str__(self):
         return self.brand_name
