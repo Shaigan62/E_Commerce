@@ -98,10 +98,11 @@ class ProductFilterViewSet(APIView):
         categories = [cid.id for cid in Category.objects.filter(title__in=post_data['categories'])]
 
         product = Product.objects.filter(price__range=(priceStart,priceEnd))
-        if post_data['brands']:
-            product = product.filter(brand__in=brands)
         if post_data['categories']:
             product = product.filter(category__in=categories)
+
+        if post_data['brands']:
+            product = product.filter(brand__in=brands)
 
         product = product.order_by('id')
 

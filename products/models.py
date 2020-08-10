@@ -5,6 +5,7 @@ class Category(models.Model):
     title = models.CharField(max_length=255)
     parent_id = models.ForeignKey("self",on_delete=models.CASCADE,null=True)
     category_image = models.CharField(max_length=255, null=True, default="")
+    category_code = models.CharField(max_length=255,null=True)
 
     def __str__(self):
         return self.title
