@@ -8,6 +8,9 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 
+
+from recommenderSystem import views as recom_view
+
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
@@ -153,12 +156,14 @@ class CategoryFilterViewSet(APIView): #returns sub category and brand
 class IncreaseProductClick(APIView):
     def put(self, request, pk, format=None):
         try:
-            snippet = Product.objects.get(pk=pk)
+            snippet = Product.objects.filter(id=pk)[0]
             snippet.user_clicks += 1
             snippet.save()
             serial_data = ProductSerializer(snippet)
+            recom_view.get_dataframe()
             return Response(serial_data.data)
-        except Exception:
+
+        except Exception as e:
             return Response({'message':"No Product Found"}, status=status.HTTP_204_NO_CONTENT)
 
 
