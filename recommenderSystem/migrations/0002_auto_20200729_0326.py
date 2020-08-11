@@ -17,10 +17,6 @@ class Migration(migrations.Migration):
             name='user_activity',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('viewed', models.BooleanField()),
-                ('rated', models.BooleanField()),
-                ('purchase', models.BooleanField()),
-                ('coll_date', models.DateTimeField()),
                 ('product_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='products.Product')),
                 ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.User')),
             ],

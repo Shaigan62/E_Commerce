@@ -160,7 +160,6 @@ class IncreaseProductClick(APIView):
             snippet.user_clicks += 1
             snippet.save()
             serial_data = ProductSerializer(snippet)
-            recom_view.get_dataframe()
             return Response(serial_data.data)
 
         except Exception as e:
