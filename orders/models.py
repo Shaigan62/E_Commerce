@@ -3,7 +3,7 @@ from accounts.models import User
 from products.models import Product,Product_Variant
 
 class Order(models.Model):
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
 
