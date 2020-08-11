@@ -19,4 +19,5 @@ urlpatterns = [
     path('filter/',ProductFilterViewSet.as_view(), name='filter'),
     path('productclick/<int:pk>/',IncreaseProductClick.as_view(),name='productclick'),
     path('subcategory/<int:pid>/',SubCategoryViewSet.as_view(),name='subcategory'),
+    path('categoryfilter/<int:pid>/',CategoryFilterViewSet.as_view(),name='categoryfilter')
 ]

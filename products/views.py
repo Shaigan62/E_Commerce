@@ -55,6 +55,9 @@ class ParentCategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.filter(parent_id__isnull=True)
 
 
+
+
+
 class ProductRatingViewSet(viewsets.ModelViewSet):
     serializer_class = ProductRatingSerializer
     queryset = Product_Rating.objects.all()
@@ -62,7 +65,6 @@ class ProductRatingViewSet(viewsets.ModelViewSet):
 class BrandViewSet(viewsets.ModelViewSet):
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-
 
 
 
@@ -88,17 +90,41 @@ class ProductByCategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['title']
 
 
+
+def nestedcateogries(pid_list):
+    id_list = []
+    for pid in pid_list:
+        sub_categories = Category.objects.filter(parent_id=pid)
+        data = []
+        data = [x.id for x in sub_categories]
+        id_list.extend(data)
+    return id_list
+
+
 class ProductFilterViewSet(APIView):
     def post(self, request):
         post_data = request.data
         priceStart = post_data['priceStart']
         priceEnd = post_data['priceEnd'] if post_data['priceEnd'] > 0 else Product.objects.latest('price').price
 
+
+
         brands = [bid.id for bid in Brand.objects.filter(brand_name__in=post_data['brands'])]
-        categories = [cid.id for cid in Category.objects.filter(title__in=post_data['categories'])]
 
         product = Product.objects.filter(price__range=(priceStart,priceEnd))
+
         if post_data['categories']:
+            categories = [cid.id for cid in Category.objects.filter(title__in=post_data['categories'])]
+            nestcat = categories
+            all_categoreis = nestcat
+            while True:
+                data = nestedcateogries(nestcat)
+                if data:
+                    all_categoreis.extend(data)
+                    nestcat = data
+                else:
+                    break
+            categories = all_categoreis
             product = product.filter(category__in=categories)
 
         if post_data['brands']:
@@ -112,6 +138,16 @@ class ProductFilterViewSet(APIView):
         serializer = ProductDetailsSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+
+class CategoryFilterViewSet(APIView): #returns sub category and brand
+    def get(self,request,*args,**kwargs):
+        pid = kwargs.get('pid')
+        sub_cateogries = Category.objects.filter(parent_id=pid)
+        sub_brands = Brand.objects.filter(category_id=pid)
+        category_serializer = CategorySerializer(sub_cateogries,many=True)
+        brand_seriailizer = BrandSerializer(sub_brands,many=True)
+
+        return Response({'categories':category_serializer.data,'brands':brand_seriailizer.data})
 
 
 class IncreaseProductClick(APIView):
