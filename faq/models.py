@@ -5,4 +5,4 @@ from django.db import models
 class FAQ(models.Model):
     question = models.TextField()
     answer = models.TextField()
-    question_date = models.DateTimeField()
+    question_date = models.DateTimeField(auto_now_add=True)

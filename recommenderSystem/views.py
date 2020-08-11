@@ -41,8 +41,11 @@ def get_recommendations(title):
     df = df.reset_index()
     indices = pd.Series(df.index, index=df['name'])
 
-    idx = indices[title]
-    idx = idx.iloc[0]
+    try:
+        idx = indices[title]
+        idx = idx.iloc[0]
+    except Exception:
+        idx = indices[title]
     sim_scores = list(enumerate(cosine_sim2[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:11]
@@ -54,17 +57,27 @@ class RecommendProduct(APIView):
     def get(self,request,*args,**kwargs):
         current_user = request.user
         if current_user.is_authenticated:
-            activity = user_activity.objects.filter(user_id=current_user.id)
-            product_list = [x.id for x in activity]
-            product_data = Product.objects.filter(id__in=product_list)
-            product_name = [x.name for x in product_data]
-            result = get_recommendations(product_name[0]).tolist()
-            recommended_products = Product.objects.filter(name__in=result)
-            final_data = ProductDetailsSerializer(recommended_products,many=True)
-            return Response(final_data.data)
-            # return JsonResponse({"message": "Logged In"})
+            activity = user_activity.objects.filter(user_id=current_user.id).order_by('-activity_time')
+            if activity:
+                product_name = [x.product_id.name for x in activity]
+                result = get_recommendations(product_name[0]).tolist()
+                recommended_products = Product.objects.filter(name__in=result)
+                final_data = ProductDetailsSerializer(recommended_products,many=True)
+                return Response(final_data.data)
+                # return JsonResponse({"message": "Logged In"})
+            else:
+                product_top = (Product.objects
+                               .order_by('-user_clicks')
+                               )[:5]
+                final_data = ProductDetailsSerializer(product_top, many=True)
+                return Response(final_data.data)
+
         else:
-            return JsonResponse({"message":"Not Logged In"})
+            product_top = (Product.objects
+                           .order_by('-user_clicks')
+                           )[:5]
+            final_data = ProductDetailsSerializer(product_top,many=True)
+            return Response(final_data.data)
 
 class RegisterActivityViewSet(APIView):
     def get(self,request,*args,**kwargs):
