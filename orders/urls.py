@@ -11,4 +11,6 @@ router.register('orderdetails',OrderDetailsViewSet,basename='order_details')
 urlpatterns = [
     path('',include(router.urls)),
     path('customerorders/',CustomerOrdersViewSet.as_view(),name='customerorders'),
+    path('getorderdetails/<int:oid>/',GetOrderDetailsViewSet.as_view(),name='getorderdetails'),
+    path('cancelorder/',CancelOrder.as_view(),name='cancelorder'),
 ]

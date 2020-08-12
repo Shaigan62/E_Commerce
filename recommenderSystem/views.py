@@ -60,7 +60,7 @@ class RecommendProduct(APIView):
     def get(self,request,*args,**kwargs):
         current_user = request.user
         if current_user.is_authenticated:
-            activity = user_activity.objects.filter(user_id=current_user.id).order_by('-activity_time')
+            activity = user_activity.objects.filter(user_id=current_user.id).order_by('-activity_time')[:3]
             if activity:
                 product_name = [x.product_id.name for x in activity]
                 result = get_recommendations(product_name).tolist()

@@ -9,4 +9,6 @@ urlpatterns = [
     path('orders/',include('orders.urls')),
     path('productsearch/',include('search_app.urls')),
     path('shoppingcart/',include('shoppingcart.urls')),
+    path('recommender/',include('recommenderSystem.urls')),
+    path('faq/',include('faq.urls')),
 ]
