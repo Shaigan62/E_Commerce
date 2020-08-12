@@ -40,16 +40,19 @@ def get_recommendations(title):
     cosine_sim2 = cosine_similarity(count_matrix, count_matrix)
     df = df.reset_index()
     indices = pd.Series(df.index, index=df['name'])
+    product_indices = []
+    for pro in title:
+        try:
+            idx = indices[pro]
+            idx = idx.iloc[0]
+        except Exception:
+            idx = indices[pro]
+        sim_scores = list(enumerate(cosine_sim2[idx]))
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        sim_scores = sim_scores[1:int(10/len(title))+1]
+        ind = [i[0] for i in sim_scores]
+        product_indices.extend(ind)
 
-    try:
-        idx = indices[title]
-        idx = idx.iloc[0]
-    except Exception:
-        idx = indices[title]
-    sim_scores = list(enumerate(cosine_sim2[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:11]
-    product_indices = [i[0] for i in sim_scores]
     return df['name'].iloc[product_indices]
 
 
@@ -60,7 +63,7 @@ class RecommendProduct(APIView):
             activity = user_activity.objects.filter(user_id=current_user.id).order_by('-activity_time')
             if activity:
                 product_name = [x.product_id.name for x in activity]
-                result = get_recommendations(product_name[0]).tolist()
+                result = get_recommendations(product_name).tolist()
                 recommended_products = Product.objects.filter(name__in=result)
                 final_data = ProductDetailsSerializer(recommended_products,many=True)
                 return Response(final_data.data)
